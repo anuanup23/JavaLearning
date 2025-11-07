@@ -2,6 +2,7 @@ package Custom;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MyHashMap<K,V> {
 	
@@ -24,7 +25,7 @@ public class MyHashMap<K,V> {
 		int index = getHashFunction(key) % this.capacity;
 		MapNode<K,V> head = bucket.get(index);
 		while(head != null) {
-			if(head.key.equals(key)) {
+			if(Objects.equals(key, head.key)) {
 				return head.value;
 			}
 			head = head.next;
@@ -33,6 +34,7 @@ public class MyHashMap<K,V> {
 	}
 	
 	private int getHashFunction(K key) {
+		if(Objects.isNull(key)) return 0;
 		return key.hashCode();
 	}
 	
@@ -83,11 +85,11 @@ public class MyHashMap<K,V> {
 		MapNode<K,V> head = bucket.get(index);
 		MapNode<K,V> prev = null;
 		while(head != null) {
-			if(head.key.equals(key)) {
+			if(Objects.equals(key, head.key)) {
 				if(prev == null) {
-					head = head.next;
+					MapNode<K,V> nextNode = head.next;
 					head.next = null;
-					bucket.set(index, head);
+					bucket.set(index, nextNode);
 				}
 				else {
 					prev.next = head.next;
